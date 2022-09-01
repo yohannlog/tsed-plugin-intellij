@@ -23,8 +23,6 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <moduleType id="DEMO_MODULE_TYPE" implementationClass="fr.tsed.tsedproject.wizards.DemoModuleType"/>
-
         <directoryProjectGenerator implementation="fr.tsed.tsedproject.wizards.TsedCliProjectGenerator"/>
         <projectTemplatesFactory implementation="fr.tsed.tsedproject.wizards.TsedProjectTemplateFactory"/>
 

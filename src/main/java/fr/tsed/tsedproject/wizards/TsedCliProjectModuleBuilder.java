@@ -7,6 +7,6 @@ import com.intellij.ide.wizard.GeneratorNewProjectWizardBuilderAdapter;
 
 public class TsedCliProjectModuleBuilder extends GeneratorNewProjectWizardBuilderAdapter {
     public TsedCliProjectModuleBuilder() {
-        super((GeneratorNewProjectWizard)(new WebTemplateNewProjectWizard((WebProjectTemplate)(new TsedCliProjectGenerator()))));
+        super((new WebTemplateNewProjectWizard((new TsedCliProjectGenerator()))));
     }
 }

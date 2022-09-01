@@ -10,6 +10,6 @@ public class TsedProjectTemplateFactory extends JavaScriptNewTemplatesFactoryBas
     @NotNull
     @Override
     public ProjectTemplate[] createTemplates(@Nullable WizardContext context) {
-        return new ProjectTemplate[]{(ProjectTemplate)(new TsedCliProjectGenerator())};
+        return new ProjectTemplate[]{(new TsedCliProjectGenerator())};
     }
 }

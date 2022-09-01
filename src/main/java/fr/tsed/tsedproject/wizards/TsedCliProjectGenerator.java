@@ -8,10 +8,21 @@ import com.intellij.lang.javascript.boilerplate.NpmPackageProjectGenerator;
 import com.intellij.lang.javascript.boilerplate.NpxPackageDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ContentEntry;
+import com.intellij.openapi.ui.ComboBox;
+import com.intellij.openapi.ui.LabeledComponent;
 import com.intellij.openapi.ui.ValidationInfo;
 import com.intellij.openapi.util.NlsContexts;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.platform.ProjectGeneratorPeer;
+import com.intellij.ui.CheckBoxList;
+import com.intellij.ui.CheckboxTree;
+import com.intellij.ui.components.JBCheckBox;
+import com.intellij.ui.components.JBComboBoxLabel;
+import com.intellij.ui.components.JBLabel;
+import com.intellij.ui.layout.ButtonSelectorKt;
+import com.intellij.ui.layout.ButtonSelectorToolbar;
+import com.intellij.ui.layout.RowBuilder;
+import com.intellij.ui.tabs.JBTabs;
 import fr.tsed.tsedproject.TsedBundle;
 import fr.tsed.tsedproject.TsedIcons;
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +46,8 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
     protected void customizeModule(@NotNull VirtualFile virtualFile, ContentEntry contentEntry) {
 
     }
+
+
 
     @Override
     protected @NotNull String packageName() {
@@ -69,6 +82,9 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
 
     @Override
     public @NotNull ProjectGeneratorPeer<Settings> createPeer() {
+        //log
+        JBCheckBox defaultSetupCheckbox = new JBCheckBox("test",true);
+        System.out.println("ddddddddddddd");
         return new TsedCLIProjectGeneratorPeer();
     }
 
@@ -79,9 +95,39 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
     }
 
     private class TsedCLIProjectGeneratorPeer extends NpmPackageGeneratorPeer {
+
+        private JCheckBox       myUseDefaults;
+
+        private JComboBox<String>       myPackageManager;
+        private JCheckBox myUseDefaults1;
+        private JCheckBox myUseDefaults2;
+
         @Override
         protected JPanel createPanel() {
-            return super.createPanel();
+            System.out.println("sssssssssss");
+            final JPanel panel = super.createPanel();
+
+            myUseDefaults = new JCheckBox("test", true);
+            panel.add(myUseDefaults);
+
+            myUseDefaults1 = new JCheckBox("test", true);
+            panel.add(myUseDefaults1);
+            myUseDefaults2 = new JCheckBox("tests", true);
+            panel.add(myUseDefaults2);
+
+            myPackageManager = new ComboBox<>();
+            myPackageManager.addItem("express");
+            myPackageManager.addItem("koa.js");
+
+            return panel;
+        }
+
+        @Override
+        public void buildUI(@NotNull SettingsStep settingsStep) {
+            super.buildUI(settingsStep);
+            settingsStep.addSettingsComponent(myUseDefaults);
+            settingsStep.addSettingsField("Choose: ", myPackageManager);
+            settingsStep.addSettingsField("Choose a framework", myUseDefaults);
         }
 
         @Override
