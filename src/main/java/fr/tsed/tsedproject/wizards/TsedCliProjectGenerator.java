@@ -2,7 +2,9 @@ package fr.tsed.tsedproject.wizards;
 
 import com.intellij.execution.filters.Filter;
 import com.intellij.ide.util.projectWizard.SettingsStep;
+import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreter;
 import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreterField;
+import com.intellij.javascript.nodejs.util.NodePackage;
 import com.intellij.javascript.nodejs.util.NodePackageField;
 import com.intellij.lang.javascript.boilerplate.NpmPackageProjectGenerator;
 import com.intellij.lang.javascript.boilerplate.NpxPackageDescriptor;
@@ -14,12 +16,15 @@ import com.intellij.openapi.util.NlsContexts;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.platform.ProjectGeneratorPeer;
 import com.intellij.ui.CheckboxTree;
+import com.intellij.util.Function;
 import fr.tsed.tsedproject.TsedBundle;
 import fr.tsed.tsedproject.TsedIcons;
+import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -85,7 +90,7 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
         List<String> parameters = new ArrayList<>();
         parameters.add("init");
 
-        parameters.add("--packageManager=" + cliProjectSettings.packageManager);
+        parameters.add("--package-manager=" + cliProjectSettings.packageManager);
 
         parameters.add("--project-name=" + projectName);
 
@@ -162,7 +167,7 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
             if (settings.eslintExtra.equals("Prettier")) {
                 features.add("prettier");
             } else if (settings.eslintExtra.equals("On Commit")) {
-                features.add("standard");
+                features.add("lintstaged");
             }
         }
 
@@ -217,7 +222,6 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
 
         @Override
         protected JPanel createPanel() {
-            System.out.println("sssssssssss");
             final JPanel panel = super.createPanel();
 
             packageManager = new ComboBox<>(new String[]{"npm", "yarn", "pnpm (experimental)"});

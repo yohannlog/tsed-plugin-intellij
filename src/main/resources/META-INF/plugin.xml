@@ -8,7 +8,7 @@
     <name>Tsed-project</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor email="support@yourcompany.com" url="https://www.yourcompany.com">YourCompany</vendor>
+    <vendor email="contact@yohanncatherine.com" url="https://yohanncatherine.com">Yoservice.com</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
@@ -28,5 +28,12 @@
 
         <moduleBuilder builderClass="fr.tsed.tsedproject.wizards.TsedCliProjectModuleBuilder"/>
         <errorHandler implementation="fr.tsed.tsedproject.diagnostics.TsedErrorReportSubmitter"/>
+
+        <notificationGroup displayType="BALLOON" id="Tsed CLI" isLogByDefault="false" bundle="messages.TsedBundle" key="tsed.description.tsed-cli"/>
     </extensions>
+    <actions resource-bundle="messages.TsedBundle">
+        <action class="fr.tsed.tsedproject.TsedCliGenerateAction" icon="AllIcons.Toolwindows.Documentation" id="tsedCliGenerate" text="TODO" description="TODO DESCRIPTION">
+            <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewDir"/>
+        </action>
+    </actions>
 </idea-plugin>

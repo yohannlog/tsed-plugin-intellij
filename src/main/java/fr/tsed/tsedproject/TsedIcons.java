@@ -19,11 +19,11 @@ public final class TsedIcons {
     static {
         TsedIcons var0 = new TsedIcons();
         INSTANCE = var0;
-        Icon var10000 = IconLoader.getIcon("/icons/type.svg", var0.getClass());
-        Intrinsics.checkNotNullExpressionValue(var10000, "IconLoader.getIcon(\"/icons/type.svg\", javaClass)");
+        Icon var10000 = IconLoader.getIcon("/icons/tsed.svg", var0.getClass());
+        Intrinsics.checkNotNullExpressionValue(var10000, "IconLoader.getIcon(\"/icons/tsed.svg\", javaClass)");
         FileType = var10000;
         var10000 = IconLoader.getIcon("/icons/tsed.svg", var0.getClass());
-        Intrinsics.checkNotNullExpressionValue(var10000, "IconLoader.getIcon(\"/icons/nest.svg\", javaClass)");
+        Intrinsics.checkNotNullExpressionValue(var10000, "IconLoader.getIcon(\"/icons/tsed.svg\", javaClass)");
         ProjectGenerator = var10000;
     }
 }
