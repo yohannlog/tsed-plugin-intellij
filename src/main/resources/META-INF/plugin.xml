@@ -29,6 +29,8 @@
         <moduleBuilder builderClass="fr.tsed.tsedproject.wizards.TsedCliProjectModuleBuilder"/>
         <errorHandler implementation="fr.tsed.tsedproject.diagnostics.TsedErrorReportSubmitter"/>
 
+        <directoryProjectConfigurator implementation="fr.tsed.tsedproject.TsedProjectConfigurator" order="after PlatformProjectConfigurator"/>
+
         <notificationGroup displayType="BALLOON" id="Tsed CLI" isLogByDefault="false" bundle="messages.TsedBundle" key="tsed.description.tsed-cli"/>
     </extensions>
     <actions resource-bundle="messages.TsedBundle">

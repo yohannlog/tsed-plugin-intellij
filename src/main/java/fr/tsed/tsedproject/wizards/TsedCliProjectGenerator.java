@@ -8,17 +8,21 @@ import com.intellij.javascript.nodejs.util.NodePackage;
 import com.intellij.javascript.nodejs.util.NodePackageField;
 import com.intellij.lang.javascript.boilerplate.NpmPackageProjectGenerator;
 import com.intellij.lang.javascript.boilerplate.NpxPackageDescriptor;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ContentEntry;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.ValidationInfo;
 import com.intellij.openapi.util.NlsContexts;
+import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.platform.ProjectGeneratorPeer;
 import com.intellij.ui.CheckboxTree;
 import com.intellij.util.Function;
 import fr.tsed.tsedproject.TsedBundle;
+import fr.tsed.tsedproject.TsedCliUtil;
 import fr.tsed.tsedproject.TsedIcons;
+import fr.tsed.tsedproject.TsedProjectConfigurator;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,10 +45,11 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
     }
 
     @Override
-    protected void customizeModule(@NotNull VirtualFile virtualFile, ContentEntry contentEntry) {
-
+    protected void customizeModule(@NotNull VirtualFile baseDir, ContentEntry entry) {
+        if (entry != null) {
+            TsedProjectConfigurator.excludeDefault(baseDir, entry);
+        }
     }
-
 
     @Override
     protected @NotNull String packageName() {
@@ -80,6 +85,11 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
     @Override
     public @NotNull ProjectGeneratorPeer<Settings> createPeer() {
         return new TsedCLIProjectGeneratorPeer();
+    }
+
+    @Override
+    protected @NotNull File workingDir(Settings settings, @NotNull VirtualFile baseDir) {
+        return VfsUtilCore.virtualToIoFile(baseDir);
     }
 
     @Override
@@ -173,6 +183,14 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
 
 
         return String.join(",", features).toLowerCase();
+    }
+
+    @Override
+    protected @NotNull Runnable postInstall(@NotNull Project project, @NotNull VirtualFile baseDir, File workingDir) {
+        return () -> ApplicationManager.getApplication().executeOnPooledThread(() -> {
+           super.postInstall(project, baseDir, workingDir).run();
+            TsedCliUtil.createRunConfiguration(project, baseDir);
+        });
     }
 
     private class TsedCLIProjectGeneratorPeer extends NpmPackageGeneratorPeer {

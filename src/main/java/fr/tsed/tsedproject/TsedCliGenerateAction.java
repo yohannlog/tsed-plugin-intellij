@@ -45,6 +45,13 @@ public class TsedCliGenerateAction extends DumbAwareAction {
         @Nullable FileEditor editor = e.getData(PlatformDataKeys.FILE_EDITOR);
         VirtualFile cli = TsedCliUtil.findTsedCliFolder(project, file);
         SemVer cliVersion = TsedCliUtil.getTsedCliPackageVersion(cli);
+        /*if (cliVersion == null) {
+            //check if tsed-cli is installed globally
+            NodeJsInterpreter interpreter = NodeJsInterpreterManager.getInstance(project).getInterpreter();
+            if (interpreter != null) {
+            }
+        }*/
+
 
         if (cliVersion == null) {
             System.out.println("Cli version is null");
