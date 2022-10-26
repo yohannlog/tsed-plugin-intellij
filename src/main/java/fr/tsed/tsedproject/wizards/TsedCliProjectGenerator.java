@@ -14,7 +14,11 @@ import com.intellij.openapi.util.NlsContexts;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.platform.ProjectGeneratorPeer;
 import com.intellij.ui.CheckboxTree;
+import com.intellij.ui.components.JBLabel;
+import com.intellij.ui.components.JBList;
+import com.intellij.ui.components.JBScrollPane;
 import fr.tsed.tsedproject.TsedBundle;
+import fr.tsed.tsedproject.TsedConstants;
 import fr.tsed.tsedproject.TsedIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,11 +40,8 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
     }
 
     @Override
-    protected void customizeModule(@NotNull VirtualFile virtualFile, ContentEntry contentEntry) {
-
-    }
-
-
+    protected void customizeModule(@NotNull VirtualFile virtualFile, ContentEntry contentEntry) {}
+    
     @Override
     protected @NotNull String packageName() {
         return packageName;
@@ -77,15 +78,17 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
         return new TsedCLIProjectGeneratorPeer();
     }
 
+    
     @Override
     protected String @NotNull [] generatorArgs(@NotNull Project project, @NotNull VirtualFile baseDir, @NotNull Settings settings) {
         TsedCLIProjectSettings cliProjectSettings = (TsedCLIProjectSettings) settings;
         String projectName = project.getName();
 
+        
         List<String> parameters = new ArrayList<>();
         parameters.add("init");
 
-        parameters.add("--packageManager=" + cliProjectSettings.packageManager);
+        parameters.add("--package-manager=" + cliProjectSettings.packageManager);
 
         parameters.add("--project-name=" + projectName);
 
@@ -113,8 +116,7 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
             System.out.println(parameters.get(i));
             args[i] = parameters.get(i).toLowerCase();
         }
-
-
+        
         return args;
     }
 
@@ -171,7 +173,6 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
     }
 
     private class TsedCLIProjectGeneratorPeer extends NpmPackageGeneratorPeer {
-
         /**
          * PACKAGE MANAGER
          */
@@ -214,12 +215,12 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
          * BLUNDER PART
          */
         private JComboBox<String> bundlerType;
+        
+        private JBScrollPane scrollPane2;
 
         @Override
         protected JPanel createPanel() {
-            System.out.println("sssssssssss");
             final JPanel panel = super.createPanel();
-
             packageManager = new ComboBox<>(new String[]{"npm", "yarn", "pnpm (experimental)"});
 
             myPackageManager = new ComboBox<>();
@@ -322,9 +323,10 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
 
         @Override
         public void buildUI(@NotNull SettingsStep settingsStep) {
+            
             super.buildUI(settingsStep);
-
-            settingsStep.addSettingsField("Package Manager:", packageManager);
+            
+            /*settingsStep.addSettingsField("Package manager: ", packageManager);
             settingsStep.addSettingsField("Choose platform: ", myPackageManager);
             settingsStep.addSettingsField("Choose an architecture: ", architectureType);
             settingsStep.addSettingsField("Choose a styling: ", stylingType);
@@ -346,7 +348,7 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
             settingsStep.addSettingsField("Choose a linter: ", linterType);
             settingsStep.addSettingsField("Choose extra linter tools", eslintExtra);
             settingsStep.addSettingsField("Choose unit framework", testingType);
-            settingsStep.addSettingsField("Choose a bundler", bundlerType);
+            settingsStep.addSettingsField("Choose a bundler", bundlerType);*/
         }
 
         @Override
@@ -356,14 +358,29 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
 
         @Override
         public @NotNull Settings getSettings() {
-            return new TsedCLIProjectSettings(super.getSettings(), myPackageManager.getSelectedItem().toString(),
-                    packageManager.getSelectedItem().toString(), architectureType.getSelectedItem().toString(),
-                    stylingType.getSelectedItem().toString(), useTypeGraph.isSelected(),
-                    ormType.getSelectedItem().toString(),
-                    useDatabase.isSelected(),databaseType.getSelectedItem().toString(), usePassport.isSelected(), useSocketio.isSelected(),
-                    useSwagger.isSelected(), useOpenId.isSelected(), useTesting.isSelected(), testingType.getSelectedItem().toString(),
-                    useLinter.isSelected(), eslintExtra.getSelectedItem().toString(), useBundlers.isSelected(), useCommands.isSelected());
+            
+            return new TsedCLIProjectSettings(super.getSettings(),
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_MY_PACKAGE_MANAGER),
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_MANAGER), 
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_ARCHITECTURE),
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_STYLING), 
+                    Boolean.TRUE.equals(TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_GRAPH)),
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_ORM_TYPE),
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_DATABASE),
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_DATABASE_TYPE),
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_PASSPORT), 
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_SOCKETIO),
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_SWAGGER),
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_OPENID),
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_TESTING),
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_TESTING_TYPE),
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_LINTER),
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_ESLINT_EXTRA_TYPE),
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_BUNDLER),
+                    TsedConstants.WIZARD_CONTEXT.getUserData(TsedConstants.WIZARD_PACKAGE_COMMANDS));
         }
+        
+        
 
         @Override
         public @Nullable ValidationInfo validate() {
@@ -371,7 +388,7 @@ public class TsedCliProjectGenerator extends NpmPackageProjectGenerator {
         }
     }
 
-    private static class TsedCLIProjectSettings extends Settings {
+    public static class TsedCLIProjectSettings extends Settings {
 
         public final String myPackageManager;
         public final String packageManager;

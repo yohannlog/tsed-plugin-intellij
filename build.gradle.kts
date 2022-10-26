@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.7.0"
+    id("org.jetbrains.intellij") version "1.9.0"
 }
 
 group = "fr.tsed"
@@ -13,7 +13,7 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2021.3")
+    version.set("2022.1.4")
     type.set("IU") // Target IDE Platform
 
     plugins.set(listOf("JavaScript"))
@@ -27,8 +27,8 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("213")
-        untilBuild.set("223.*")
+        sinceBuild.set("221")
+        untilBuild.set("231.*")
     }
 
     signPlugin {
